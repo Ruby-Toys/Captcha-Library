@@ -13,6 +13,7 @@ public class CaptchaProperties {
     private final String attributeName;
     private final Integer answerLength;
     private final Size size;
+    private final Integer noise;
 
-    public record Size(Integer defaultWidth, Integer defaultHeight) { }
+    public record Size(int width, int height) { }
 }

@@ -18,15 +18,20 @@ public class CaptchaController {
     private final CaptchaUtil captchaUtil;
 
     @GetMapping("${captcha.url}")
-    public void createCaptcha(CaptchaVO captchaVO, HttpServletRequest request, HttpServletResponse response) {
+    public void getCaptchaImage(CaptchaVO captchaVO, HttpServletRequest request, HttpServletResponse response) {
         Captcha captcha = captchaVO.hasSize() ?
                 captchaUtil.createCaptcha(captchaVO.getWidth(), captchaVO.getHeight())
                 : captchaUtil.createCaptcha();
-        AudioCaptcha audioCaptcha = captchaUtil.createAudioCaptcha(captcha);
 
         request.getSession().setAttribute(captchaProperties.getAttributeName(), captcha);
-
         CaptchaServletUtilCustom.writeImage(response, captcha.getImage());
+    }
+
+    @GetMapping("${captcha.url}/audio")
+    public void getCaptchaAudio(HttpServletRequest request, HttpServletResponse response) {
+        Captcha captcha = (Captcha) request.getSession().getAttribute(captchaProperties.getAttributeName());
+        AudioCaptcha audioCaptcha = captchaUtil.createAudioCaptcha(captcha);
+
         CaptchaServletUtilCustom.writeAudio(response, audioCaptcha.getChallenge());
     }
 }

@@ -1,0 +1,7 @@
+captcha:
+  url: "captcha"
+  size:
+    width: 300
+    height: 50
+  attribute-name: "captcha"
+  noise: 5

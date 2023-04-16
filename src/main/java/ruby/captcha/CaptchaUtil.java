@@ -12,8 +12,14 @@ public class CaptchaUtil {
     private final CaptchaProperties captchaProperties;
 
     public Captcha createCaptcha() {
-        Integer width = captchaProperties.getSize().defaultWidth();
-        Integer height = captchaProperties.getSize().defaultHeight();
+        int width = 300;
+        int height = 50;
+
+        if (captchaProperties.getSize() != null) {
+            width = captchaProperties.getSize().width();
+            height = captchaProperties.getSize().height();
+        }
+
         return createCaptcha(width, height);
     }
 
@@ -21,12 +27,20 @@ public class CaptchaUtil {
         Integer answerLength = captchaProperties.getAnswerLength();
         answerLength = answerLength == null ? 5 : answerLength;
 
-        return new Captcha.Builder(width, height)
+        Captcha.Builder builder = new Captcha.Builder(width, height)
                 .addText(new NumbersAnswerProducer(answerLength))
-                .addNoise().addNoise().addNoise()
                 .addBackground(new GradiatedBackgroundProducer())
-                .addBorder()
-                .build();
+                .addBorder();
+
+        int noiseCount = 3;
+        if (captchaProperties.getNoise() != null) {
+            noiseCount = captchaProperties.getNoise();
+        }
+        for (int i = 0; i < noiseCount; i++) {
+            builder = builder.addNoise();
+        }
+
+        return builder.build();
     }
 
     public AudioCaptcha createAudioCaptcha(Captcha captcha) {
