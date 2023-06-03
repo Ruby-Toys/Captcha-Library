@@ -24,6 +24,7 @@ public class CaptchaController {
                 : captchaUtil.createCaptcha();
 
         request.getSession().setAttribute(captchaProperties.getAttributeName(), captcha);
+        request.getSession().setMaxInactiveInterval(captchaProperties.getSessionTimeout());
         CaptchaServletUtilCustom.writeImage(response, captcha.getImage());
     }
 

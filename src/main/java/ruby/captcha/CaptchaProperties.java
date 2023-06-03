@@ -14,6 +14,7 @@ public class CaptchaProperties {
     private final Integer answerLength;
     private final Size size;
     private final Integer noise;
+    private final int sessionTimeout;
 
     public record Size(int width, int height) { }
 }
